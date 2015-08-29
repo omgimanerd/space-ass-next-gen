@@ -6,6 +6,7 @@
 
 // Dependencies
 var fs = require('fs');
+var Util = require('./Util');
 
 function DataHandler(meteoriteData) {
   this.meteoriteData = meteoriteData;
@@ -27,10 +28,11 @@ DataHandler.prototype.getNearbyMeteors = function(latitude, longitude,
                                                   threshold) {
   var nearbyMeteors = {};
   for (var meteor in this.meteoriteData) {
-    if (Math.abs(this.meteoriteData[meteor]['latitude'] - latitude) <
-            threshold &&
-        Math.abs(this.meteoriteData[meteor]['longitude'] - longitude) <
-            threshold) {
+    if (Util.getSquaredEuclideanDistance(
+        this.meteoriteData[meteor]['latitude'],
+        this.meteoriteData[meteor]['longitude'],
+        latitude,
+        longitude) < threshold * threshold) {
       nearbyMeteors[meteor] = this.meteoriteData[meteor];
     }
   }

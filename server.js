@@ -33,8 +33,7 @@ app.get('/address', function(request, response) {
   var dangerPercentageByDistance = 0;
   var dangerPercentageByMass = 0;
   var latLng = null;
-  var nearbyMeteors = null;
-  console.log(request.query);
+  var meteors = null;
 
   async.series([
     // This first asynchronous query gets the latitude and longitude from the
@@ -62,7 +61,7 @@ app.get('/address', function(request, response) {
       });
     },
     function(callback) {
-      nearbyMeteors = dataHandler.getNearbyMeteors(
+      meteors = dataHandler.getNearbyMeteors(
           latLng.lat, latLng.lng, NEARNESS_THRESHOLD);
       dangerPercentageByDistance = dataHandler.getDangerPercentageByDistance(
           latLng.lat, latLng.lng, NEARNESS_THRESHOLD);
@@ -80,7 +79,7 @@ app.get('/address', function(request, response) {
       percentageByMass: dangerPercentageByMass,
       lat: latLng.lat,
       lng: latLng.lng,
-      nearbyMeteors: nearbyMeteors
+      meteors: meteors
     });
   });
 });
