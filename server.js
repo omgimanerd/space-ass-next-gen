@@ -65,7 +65,7 @@ app.get('/address', function(request, response) {
     function(callback) {
       nearbyMeteors = dataHandler.getNearbyMeteors(
           latLng.lat, latLng.lng, NEARNESS_THRESHOLD);
-      dangerPercentageByDistance = dataHandler.getDangerPercentage(
+      dangerPercentageByDistance = dataHandler.getDangerPercentageByDistance(
           latLng.lat, latLng.lng, NEARNESS_THRESHOLD);
       dangerPercentageByMass = dataHandler.getDangerPercentageByMass(
           latLng.lat, latLng.lng, NEARNESS_THRESHOLD);
@@ -84,6 +84,7 @@ app.get('/address', function(request, response) {
       lng: latLng.lng,
       nearbyMeteors: nearbyMeteors
     });
+    console.log(nearbyMeteors);
   });
 });
 

@@ -48,12 +48,14 @@ DataHandler.prototype.getDangerPercentageByMass = function(latitude,
                                                            longitude,
                                                            threshold) {
   var nearbyMeteors = this.getNearbyMeteors(latitude, longitude, threshold);
-  var nearbyMassSum = nearbyMeteors.reduce(function(prev, curr) {
-    return prev + curr.mass;
-  });
-  var totalMassSum = this.meteoriteData.reduce(function(prev, curr) {
-    return prev + curr.mass;
-  });
+  var nearbyMassSum = 0;
+  for (var meteor in nearbyMeteors) {
+    nearbyMassSum += nearbyMeteors[meteor]['mass'];
+  }
+  var totalMassSum = 0;
+  for (var meteor in this.meteoriteData) {
+    totalMassSum += this.meteoriteData[meteor]['mass'];
+  }
   return nearbyMassSum / totalMassSum;
 };
 
