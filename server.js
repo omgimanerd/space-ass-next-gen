@@ -28,7 +28,7 @@ app.get('/', function(request, response) {
 
 GEOCODE_URL = 'https://maps.googleapis.com/maps/api/geocode/json'
 NASA_URL = '';
-NEARNESS_THRESHOLD = 30;
+NEARNESS_THRESHOLD = 5;
 
 app.get('/address', function(request, response) {
   var dangerPercentageByDistance = 0;
@@ -63,6 +63,7 @@ app.get('/address', function(request, response) {
       });
     },
     function(callback) {
+      console.log(latLng);
       nearbyMeteors = dataHandler.getNearbyMeteors(
           latLng.lat, latLng.lng, NEARNESS_THRESHOLD);
       dangerPercentageByDistance = dataHandler.getDangerPercentageByDistance(
@@ -76,7 +77,7 @@ app.get('/address', function(request, response) {
       console.error(error);
       return;
     }
-    console.log('endpoint');
+    console.log(nearbyMeteors);
     response.render('search.html', {
       percentageByDistance: dangerPercentageByDistance,
       percentageByMass: dangerPercentageByMass,
@@ -84,7 +85,6 @@ app.get('/address', function(request, response) {
       lng: latLng.lng,
       nearbyMeteors: nearbyMeteors
     });
-    console.log(nearbyMeteors);
   });
 });
 

@@ -27,9 +27,9 @@ DataHandler.prototype.getNearbyMeteors = function(latitude, longitude,
                                                   threshold) {
   var nearbyMeteors = {};
   for (var meteor in this.meteoriteData) {
-    if (Math.abs(this.meteoriteData[meteor].latitude - latitude) <
+    if (Math.abs(this.meteoriteData[meteor]['latitude'] - latitude) <
             threshold &&
-        Math.abs(this.meteoriteData[meteor].longitude - longitude) <
+        Math.abs(this.meteoriteData[meteor]['longitude'] - longitude) <
             threshold) {
       nearbyMeteors[meteor] = this.meteoriteData[meteor];
     }
@@ -41,7 +41,8 @@ DataHandler.prototype.getDangerPercentageByDistance = function(latitude,
                                                                longitude,
                                                                threshold) {
   var nearbyMeteors = this.getNearbyMeteors(latitude, longitude, threshold);
-  return nearbyMeteors.length / this.meteoriteData.length;
+  return Object.keys(nearbyMeteors).length /
+      Object.keys(this.meteoriteData).length;
 };
 
 DataHandler.prototype.getDangerPercentageByMass = function(latitude,
