@@ -56,8 +56,8 @@
           lng: parseFloat(nearby[meteor].longitude)
         },
         radius: bound(nearby[meteor].mass,
-                      MAX_METEOR_DISPLAY_SIZE,
-                      MIN_METEOR_DISPLAY_SIZE);
+                      MIN_METEOR_DISPLAY_SIZE,
+                      MAX_METEOR_DISPLAY_SIZE)
       });
     }
   });
