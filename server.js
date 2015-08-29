@@ -28,7 +28,10 @@ app.get('/', function(request, response) {
 app.get('/address', function(request, response) {
   var data = null;
   console.log(request.body);
-  async.parallel([
+
+  async.series([
+    // This first asynchronous query gets the latitude and longitude from the
+    // user's entered address so that we can query it in NASA's meteorite API.
     function(callback) {
       var options = {
         'host': 'https.//maps.googleapis.com',
