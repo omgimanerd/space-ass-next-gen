@@ -26,8 +26,7 @@ app.get('/', function(request, response) {
   response.render('index.html');
 });
 
-GEOCODE_URL = 'https://maps.googleapis.com/maps/api/geocode/json'
-NASA_URL = '';
+GEOCODE_URL = 'https://maps.googleapis.com/maps/api/geocode/json';
 NEARNESS_THRESHOLD = 5;
 
 app.get('/address', function(request, response) {
