@@ -25,8 +25,26 @@ app.get('/', function(request, response) {
   response.render('index.html');
 });
 
-app.get('/data', function(request, response) {
-  response.render('search.html');
+app.get('/address', function(request, response) {
+  var data = null;
+  console.log(request.body);
+  async.parallel([
+    function(callback) {
+      var options = {
+        'host': 'https.//maps.googleapis.com',
+        'path': '/maps/api/geocode/json?address=1164'
+      };
+      https.request(options, function(googleResponse) {
+        googleResponse.on('data', function(chunk) {
+          data = chunk;
+        });
+      });
+    }
+  ], function(error) {
+    if (error) {
+      console.log(error);
+    }
+  });
 });
 
 var server = require('http').Server(app);
