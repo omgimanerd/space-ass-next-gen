@@ -37,4 +37,8 @@ DataHandler.prototype.getNearbyMeteors = function(latitude, longitude,
   return nearbyMeteors;
 };
 
+DataHandler.prototype.getDangerPercentage = function(latitude, longitude) {
+
+};
+
 module.exports = DataHandler;

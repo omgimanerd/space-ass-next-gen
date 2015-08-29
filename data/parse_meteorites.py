@@ -1,4 +1,8 @@
 #!/usr/bin/python
+# This script takes care of parsing the raw meteorites data file downloaded
+# from NASA. Since we only need the meteorite's mass, time, latitude, and
+# longitude, we will strip out those fields into our own JSON file.
+# Author: Alvin Lin (alvin.lin@stuypulse.com)
 
 import json
 
