@@ -1,0 +1,23 @@
+{
+  "name": "space-ass-next-gen",
+  "version": "1.0.0",
+  "description": "Space Apps Next Gen Project Pitch",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:omgimanerd/space-ass-next-gen"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/omgimanerd/space-ass-next-gen/issues"
+  },
+  "homepage": "https://github.com/omgimanerd/space-ass-next-gen",
+  "dependencies": {
+    "async": "^1.4.2"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "name": "space-ass-next-gen",
+  "version": "0.0.0",
+  "authors": [
+    "Alvin Lin <alvin.lin@stuypulse.com>"
+  ],
+  "description": "Space Apps Next Gen Project Pitch",
+  "main": "server.js",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
