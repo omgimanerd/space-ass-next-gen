@@ -23,7 +23,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/', function(request, response) {
   response.render('index.html', {
-    percentage: 0.1
+    percentage: 0.4
   });
 });
 
