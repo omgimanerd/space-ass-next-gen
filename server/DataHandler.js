@@ -37,8 +37,24 @@ DataHandler.prototype.getNearbyMeteors = function(latitude, longitude,
   return nearbyMeteors;
 };
 
-DataHandler.prototype.getDangerPercentage = function(latitude, longitude) {
+DataHandler.prototype.getDangerPercentageByDistance = function(latitude,
+                                                               longitude,
+                                                               threshold) {
+  var nearbyMeteors = this.getNearbyMeteors(latitude, longitude, threshold);
+  return nearbyMeteors.length / this.meteoriteData.length;
+};
 
+DataHandler.prototype.getDangerPercentageByMass = function(latitude,
+                                                           longitude,
+                                                           threshold) {
+  var nearbyMeteors = this.getNearbyMeteors(latitude, longitude, threshold);
+  var nearbyMassSum = nearbyMeteors.reduce(function(prev, curr) {
+    return prev + curr.mass;
+  });
+  var totalMassSum = this.meteoriteData.reduce(function(prev, curr) {
+    return prev + curr.mass;
+  });
+  return nearbyMassSum / totalMassSum;
 };
 
 module.exports = DataHandler;
