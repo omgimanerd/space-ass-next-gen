@@ -12,12 +12,13 @@ def main():
 
   parsed_fields = {}
   for item in data:
-    parsed_fields[item[8]] = {
-      'mass': item[12],
-      'time': item[14],
-      'latitude': item[15],
-      'longitude': item[16]
-    }
+    if item[12] and item[15] and item[16]:
+      parsed_fields[item[8]] = {
+        'mass': float(item[12]),
+        'time': item[14],
+        'latitude': float(item[15]),
+        'longitude': float(item[16])
+      }
 
   with open('meteorites.json', 'w') as meteorites_file:
     meteorites_file.write(json.dumps(parsed_fields, sort_keys=True,

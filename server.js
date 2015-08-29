@@ -26,12 +26,13 @@ app.get('/', function(request, response) {
   response.render('index.html');
 });
 
-GEOCODE_URL = 'https://maps.googleapis.com/maps/api/geocode/json'
-NASA_URL = '';
-NEARNESS_THRESHOLD = 30;
+GEOCODE_URL = 'https://maps.googleapis.com/maps/api/geocode/json';
+NEARNESS_THRESHOLD = 5;
 
 app.get('/address', function(request, response) {
-  var latLong = null;
+  var dangerPercentageByDistance = 0;
+  var dangerPercentageByMass = 0;
+  var latLng = null;
   var nearbyMeteors = null;
   console.log(request.query);
 
@@ -53,17 +54,20 @@ app.get('/address', function(request, response) {
           return;
         }
         try {
-          latLong = body.results[0].geometry.location;
+          latLng = body.results[0].geometry.location;
         } catch (err) {
           callback(err);
         }
-        console.log('Success! ' + latLong.lat + " " + latLong.lng);
         callback();
       });
     },
     function(callback) {
       nearbyMeteors = dataHandler.getNearbyMeteors(
-          latLong.lat, latLong.lng, NEARNESS_THRESHOLD);
+          latLng.lat, latLng.lng, NEARNESS_THRESHOLD);
+      dangerPercentageByDistance = dataHandler.getDangerPercentageByDistance(
+          latLng.lat, latLng.lng, NEARNESS_THRESHOLD);
+      dangerPercentageByMass = dataHandler.getDangerPercentageByMass(
+          latLng.lat, latLng.lng, NEARNESS_THRESHOLD);
       callback();
     },
   ], function(error) {
@@ -71,11 +75,11 @@ app.get('/address', function(request, response) {
       console.error(error);
       return;
     }
-    console.log('endpoint');
     response.render('search.html', {
-      percentage: 0.5,
-      lat: latLong.lat,
-      lng: latLong.lng,
+      percentageByDistance: dangerPercentageByDistance,
+      percentageByMass: dangerPercentageByMass,
+      lat: latLng.lat,
+      lng: latLng.lng,
       nearbyMeteors: nearbyMeteors
     });
   });

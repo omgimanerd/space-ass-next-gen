@@ -27,9 +27,9 @@ DataHandler.prototype.getNearbyMeteors = function(latitude, longitude,
                                                   threshold) {
   var nearbyMeteors = {};
   for (var meteor in this.meteoriteData) {
-    if (Math.abs(this.meteoriteData[meteor].latitude - latitude) <
+    if (Math.abs(this.meteoriteData[meteor]['latitude'] - latitude) <
             threshold &&
-        Math.abs(this.meteoriteData[meteor].longitude - longitude) <
+        Math.abs(this.meteoriteData[meteor]['longitude'] - longitude) <
             threshold) {
       nearbyMeteors[meteor] = this.meteoriteData[meteor];
     }
@@ -37,8 +37,27 @@ DataHandler.prototype.getNearbyMeteors = function(latitude, longitude,
   return nearbyMeteors;
 };
 
-DataHandler.prototype.getDangerPercentage = function(latitude, longitude) {
+DataHandler.prototype.getDangerPercentageByDistance = function(latitude,
+                                                               longitude,
+                                                               threshold) {
+  var nearbyMeteors = this.getNearbyMeteors(latitude, longitude, threshold);
+  return Object.keys(nearbyMeteors).length /
+      Object.keys(this.meteoriteData).length;
+};
 
+DataHandler.prototype.getDangerPercentageByMass = function(latitude,
+                                                           longitude,
+                                                           threshold) {
+  var nearbyMeteors = this.getNearbyMeteors(latitude, longitude, threshold);
+  var nearbyMassSum = 0;
+  for (var meteor in nearbyMeteors) {
+    nearbyMassSum += nearbyMeteors[meteor]['mass'];
+  }
+  var totalMassSum = 0;
+  for (var meteor in this.meteoriteData) {
+    totalMassSum += this.meteoriteData[meteor]['mass'];
+  }
+  return nearbyMassSum / totalMassSum;
 };
 
 module.exports = DataHandler;
