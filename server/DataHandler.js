@@ -8,12 +8,25 @@
 var fs = require('fs');
 var Util = require('./Util');
 
+/**
+ * @constructor
+ * This class handles the interpretation of latitude, longitude, and meteorite
+ * positional data.
+ */
 function DataHandler(meteoriteData) {
   this.meteoriteData = meteoriteData;
 
   this.setup();
 }
 
+DataHandler.NEAR_COLOR = '#d00000';
+
+DataHandler.FAR_COLOR = '#00e600';
+
+/**
+ * @private
+ * This function is called internally and reads the meteorites JSON file.
+ */
 DataHandler.prototype.setup = function() {
   var context = this;
   fs.readFile('data/meteorites.json', function(err, data) {
@@ -24,6 +37,15 @@ DataHandler.prototype.setup = function() {
   });
 };
 
+/**
+ * This function returns an object of the same format as data/meteorites.json
+ * but contains only meteors that are closer than the given threshold to the
+ * given latitude and longitude. It will also call colorCodeMeteors on the list
+ * of meteors.
+ * @param {number} latitude
+ * @param {number} longitude
+ * @param {number} threshold
+ */
 DataHandler.prototype.getNearbyMeteors = function(latitude, longitude,
                                                   threshold) {
   var nearbyMeteors = {};
@@ -36,9 +58,18 @@ DataHandler.prototype.getNearbyMeteors = function(latitude, longitude,
       nearbyMeteors[meteor] = this.meteoriteData[meteor];
     }
   }
-  return nearbyMeteors;
+  return this.colorCodeMeteors(nearbyMeteors, latitude,
+                               longitude, threshold / 2);
 };
 
+/**
+ * Given a latitude, longitude, and distance threshold, this function returns
+ * a decimal number representing the danger percentage index of the location
+ * by frequency of meteors in the area versus frequency worldwide.
+ * @param {number} latitude
+ * @param {number} longitude
+ * @param {number} threshold
+ */
 DataHandler.prototype.getDangerPercentageByDistance = function(latitude,
                                                                longitude,
                                                                threshold) {
@@ -47,6 +78,15 @@ DataHandler.prototype.getDangerPercentageByDistance = function(latitude,
       Object.keys(this.meteoriteData).length;
 };
 
+/**
+ * Given a latitude, longitude, and distance threshold, this function returns
+ * a decimal number representing the danger percentage index of the location
+ * by the total mass of the meteors in the region versus the total mass of
+ * all meteors worldwide.
+ * @param {number} latitude
+ * @param {number} longitude
+ * @param {number} threshold
+ */
 DataHandler.prototype.getDangerPercentageByMass = function(latitude,
                                                            longitude,
                                                            threshold) {
@@ -60,6 +100,32 @@ DataHandler.prototype.getDangerPercentageByMass = function(latitude,
     totalMassSum += this.meteoriteData[meteor]['mass'];
   }
   return nearbyMassSum / totalMassSum;
+};
+
+/**
+ * This function will mutate the given array of meteor objects and add a field to
+ * each meteor specifying its color based on its distance from the latitude and
+ * longitude.
+ * @private
+ * @param {Array.<Object>} meteors
+ * @param {number} latitude
+ * @param {number} longitude
+ * @param {number} threshold
+ */
+DataHandler.prototype.colorCodeMeteors = function(meteors, latitude,
+                                                  longitude, threshold) {
+  for (var meteor in meteors) {
+    if (Util.getSquaredEuclideanDistance(
+        this.meteoriteData[meteor]['latitude'],
+        this.meteoriteData[meteor]['longitude'],
+        latitude,
+        longitude) < threshold * threshold) {
+      meteors[meteor]['color'] = DataHandler.NEAR_COLOR;
+    } else {
+      meteors[meteor]['color'] = DataHandler.FAR_COLOR;
+    }
+  }
+  return meteors;
 };
 
 module.exports = DataHandler;

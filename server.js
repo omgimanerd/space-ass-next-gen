@@ -27,7 +27,7 @@ app.get('/', function(request, response) {
 });
 
 GEOCODE_URL = 'https://maps.googleapis.com/maps/api/geocode/json';
-NEARNESS_THRESHOLD = 5;
+NEARNESS_THRESHOLD = 10;
 
 app.get('/address', function(request, response) {
   var dangerPercentageByDistance = 0;
