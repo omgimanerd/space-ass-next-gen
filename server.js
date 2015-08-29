@@ -2,7 +2,6 @@ var PORT_NUMBER = process.env.PORT || 5000;
 
 // Dependencies
 var async = require('async');
-var bodyParser = require('body-parser');
 var express = require('express');
 var swig = require('swig');
 var https = require('https');
@@ -18,8 +17,6 @@ app.use('/bower_components',
         express.static(__dirname + '/bower_components'));
 app.use('/static',
         express.static(__dirname + '/static'));
-app.use(bodyParser.urlencoded({ extended: true }));
-
 
 app.get('/', function(request, response) {
   response.render('index.html');
@@ -27,26 +24,29 @@ app.get('/', function(request, response) {
 
 app.get('/address', function(request, response) {
   var data = null;
-  console.log(request.body);
+  console.log(request.query);
 
-  async.series([
-    // This first asynchronous query gets the latitude and longitude from the
-    // user's entered address so that we can query it in NASA's meteorite API.
-    function(callback) {
-      var options = {
-        'host': 'https.//maps.googleapis.com',
-        'path': '/maps/api/geocode/json?address=1164'
-      };
-      https.request(options, function(googleResponse) {
-        googleResponse.on('data', function(chunk) {
-          data = chunk;
-        });
-      });
-    }
-  ], function(error) {
-    if (error) {
-      console.log(error);
-    }
+//  async.series([
+//    // This first asynchronous query gets the latitude and longitude from the
+//    // user's entered address so that we can query it in NASA's meteorite API.
+//    function(callback) {
+//      var options = {
+//        'host': 'https.//maps.googleapis.com',
+//        'path': '/maps/api/geocode/json?address=1164'
+//      };
+//      https.request(options, function(googleResponse) {
+//        googleResponse.on('data', function(chunk) {
+//          data = chunk;
+//        });
+//      });
+//    }
+//  ], function(error) {
+//    if (error) {
+//      console.log(error);
+//    }
+//  });
+  response.render('search.html', {
+    percentage: 'Penis'
   });
 });
 
