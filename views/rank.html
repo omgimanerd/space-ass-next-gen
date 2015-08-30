@@ -21,7 +21,12 @@
   <div class="col-md-2 height">
     <ul class="nav nav-pills nav-stacked rank-list">
       {% for hotspot in hotspots %}
-        <li><a class="rank-link">{{ loop.index }}. {{ (hotspot.lat).toFixed(2) }}, {{ (hotspot.lng).toFixed(2) }}</a></li>
+        <li>
+          <a class="rank-link">
+            {{ loop.index }}. {{ (hotspot.lat).toFixed(2) }}, {{ (hotspot.lng).toFixed(2) }}
+            <p class="rank-percent"> Probability: {{ (hotspot.rating).toFixed(6) *100}}% </p>
+          </a>
+        </li>
       {% endfor %}
     </ul>
   </div>
@@ -42,15 +47,15 @@
       geographic_map = new google.maps.Map(
         document.getElementById(MAP_GEOGRAPHIC_CANVAS_ID),
         {
-          center: new google.maps.LatLng(-72, 36),
+          center: new google.maps.LatLng(33.05, -108.94),
           streetViewControl: false,
           zoom: 8
         }
       );
       marker = new google.maps.Marker({
         position: {
-          lat: -72,
-          lng: 36
+          lat: 33.05,
+          lng: -108.94
         },
         map: geographic_map
       });
