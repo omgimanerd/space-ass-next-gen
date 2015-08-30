@@ -26,7 +26,7 @@ html, body, #container, .map-height {
   font-size: 30px;
 }
 .map-contain {
-  height: calc(100% - 220px);
+  height: 100%;
 }
 .map {
   min-height: 300px;
@@ -51,43 +51,45 @@ html, body, #container, .map-height {
   top: 50%;
   transform: translateY(-200%);
 }
+
 .form-height {
   height: 100%;
   margin-top: -50px;
 }
 
 .search-bar {
+  display: block;
   width: 450px;
+  height: 50px;
+  border: 1px solid white;
 
   .search-text {
     display: inline-block;
+    height: 50px;
+    width: 394px;
     background-color: transparent;
     color: white;
-    height: 45px;
-    width: 400px;
+    padding-left: 20px;
     font-size: 20px;
-    padding-left: 10px;
-    border: 1px solid white;
+    border: 0;
 
     &:focus {
       outline: none;
     }
   }
 
-  .search-text::-webkit-input-placeholder {
-    color: white;
-  }
-
   .search-btn {
-    width: 45px;
+    display: inline-block;
+    width: 50px;
+    height: 50px;
     background-color: transparent;
-    border: 1px solid white;
-    height: 45px;
-    margin-left: -4px;
-    font-size: 18px;
     color: white;
+    font-size: 20px;
+    padding: 0;
+    border: 0;
   }
 }
+
 .question {
   text-align: center;
   position: relative;
