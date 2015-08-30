@@ -30,6 +30,8 @@ DataHandler.FAR_COLOR = '#00e600';
 
 DataHandler.NEARNESS_THRESHOLD = 2.5;
 
+DataHandler.NUM_CLUSTERS = 12;
+
 /**
  * @private
  * This function is called internally and reads the meteorites JSON file.
@@ -61,7 +63,8 @@ DataHandler.prototype.setup = function() {
 //        ]);
 //      }
 //      var kmeans = new clusterfck.Kmeans();
-//      var hotspotClusters = kmeans.cluster(latlngs, 10);
+//      var hotspotClusters = kmeans.cluster(latlngs,
+//                                           DataHandler.NUM_CLUSTERS);
 //      context.hotspots = [];
 //      for (var i = 0; i < kmeans.centroids.length; ++i) {
 //        var lat = kmeans.centroids[i][0];
@@ -93,7 +96,7 @@ DataHandler.prototype.setup = function() {
  * Returns the top 10 meteorite hotspots.
  */
 DataHandler.prototype.getHotspots = function() {
-  var topHotspots = copy(this.hotspots);
+  var topHotspots = this.hotspots.slice(0, 6);
   for (var i = 0; i < topHotspots.length; ++i) {
     hotspot = topHotspots[i]
     topHotspots[i]['nearbyMeteors'] = this.getNearbyMeteors(
