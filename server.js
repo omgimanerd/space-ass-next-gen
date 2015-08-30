@@ -27,7 +27,6 @@ app.get('/', function(request, response) {
 });
 
 GEOCODE_URL = 'https://maps.googleapis.com/maps/api/geocode/json';
-NEARNESS_THRESHOLD = 7.5;
 
 app.get('/address', function(request, response) {
   var dangerPercentageByDistance = 0;
@@ -61,11 +60,11 @@ app.get('/address', function(request, response) {
     },
     function(callback) {
       dangerPercentageByDistance = dataHandler.getDangerPercentageByDistance(
-          latLng.lat, latLng.lng, NEARNESS_THRESHOLD);
+          latLng.lat, latLng.lng);
       dangerPercentageByMass = dataHandler.getDangerPercentageByMass(
-          latLng.lat, latLng.lng, NEARNESS_THRESHOLD);
+          latLng.lat, latLng.lng);
       meteors = dataHandler.getNearbyMeteors(
-          latLng.lat, latLng.lng, NEARNESS_THRESHOLD);
+          latLng.lat, latLng.lng);
       callback();
     },
   ], function(error) {

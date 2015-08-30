@@ -21,8 +21,10 @@
   "dependencies": {
     "async": "^1.4.2",
     "bower": "^1.5.2",
+    "clusterfck": "^0.6.0",
     "express": "^4.13.3",
     "request": "^2.61.0",
+    "shallow-copy": "0.0.1",
     "swig": "^1.4.2"
   }
 }

@@ -5,7 +5,11 @@
  */
 
 // Dependencies
+var async = require('async');
+var clusterfck = require('clusterfck');
 var fs = require('fs');
+var copy = require('shallow-copy');
+
 var Util = require('./Util');
 
 /**
@@ -24,31 +28,75 @@ DataHandler.NEAR_COLOR = '#d00000';
 
 DataHandler.FAR_COLOR = '#00e600';
 
+DataHandler.NEARNESS_THRESHOLD = 10;
+
 /**
  * @private
  * This function is called internally and reads the meteorites JSON file.
+ * It will also calculate 10 of the highest ranked danger hotspots.
+ * We use the clusterfck library to apply the KMeans clustering algorithm
+ * to the meteorite coordinates.
  */
 DataHandler.prototype.setup = function() {
   var context = this;
-  fs.readFile('data/meteorites.json', function(err, data) {
-    if (err) {
-      throw err;
+
+  async.series([
+    function(callback) {
+      fs.readFile('data/meteorites.json', function(err, data) {
+        if (err) {
+          throw err;
+        }
+        context.meteoriteData = JSON.parse(data);
+        callback();
+      });
+    },
+    function(callback) {
+      /*
+      Bullshit way to get the cluster centroids.
+      We take the console.log output and copy it to a file lol.
+
+      var latlngs = [];
+      for (var meteor in context.meteoriteData) {
+        latlngs.push([
+          context.meteoriteData[meteor]['latitude'],
+          context.meteoriteData[meteor]['longitude']
+        ]);
+      }
+      var kmeans = new clusterfck.Kmeans();
+      var hotspotClusters = kmeans.cluster(latlngs);
+      context.hotspots = [];
+      for (var i = 0; i < kmeans.centroids.length; ++i) {
+        var lat = kmeans.centroids[i][0];
+        var lng = kmeans.centroids[i][1];
+        context.hotspots.push({
+          lat: lat,
+          lng: lng,
+          rating: context.getDangerPercentageByMass(lat, lng)
+        });
+      }
+      context.hotspots.sort(function(a, b) {
+        return b['rating'] - a['rating'];
+      });
+      console.log(context.hotspots);
+
+      We'll read from that file, fuck it.
+      */
+      fs.readFile('/data/hotspots.json', function(err, data) {
+        if (err) {
+          throw err;
+        }
+        context.hotspots = JSON.parse(data);
+        callback();
+      });
     }
-    context.meteoriteData = JSON.parse(data);
-  });
-  fs.readFile('data/hotspots.json', function(err, data) {
-    if (err) {
-      throw err;
-    }
-    context.hotspots = JSON.parse(data);
-  });
+  ]);
 };
 
 /**
- * Returns the 10 meteorite hotspots saved in hotspots.json.
+ * Returns the top 10 meteorite hotspots.
  */
 DataHandler.prototype.getHotspots = function() {
-  return this.hotspots;
+  return this.hotspots.slice(0, 10);
 };
 
 /**
@@ -60,20 +108,20 @@ DataHandler.prototype.getHotspots = function() {
  * @param {number} longitude
  * @param {number} threshold
  */
-DataHandler.prototype.getNearbyMeteors = function(latitude, longitude,
-                                                  threshold) {
+DataHandler.prototype.getNearbyMeteors = function(latitude, longitude) {
   var nearbyMeteors = {};
   for (var meteor in this.meteoriteData) {
     if (Util.getSquaredEuclideanDistance(
         this.meteoriteData[meteor]['latitude'],
         this.meteoriteData[meteor]['longitude'],
         latitude,
-        longitude) < threshold * threshold) {
+        longitude) <
+        DataHandler.NEARNESS_THRESHOLD * DataHandler.NEARNESS_THRESHOLD) {
       nearbyMeteors[meteor] = this.meteoriteData[meteor];
     }
   }
   return this.colorCodeMeteors(nearbyMeteors, latitude,
-                               longitude, threshold / 2);
+                               longitude);
 };
 
 /**
@@ -85,9 +133,8 @@ DataHandler.prototype.getNearbyMeteors = function(latitude, longitude,
  * @param {number} threshold
  */
 DataHandler.prototype.getDangerPercentageByDistance = function(latitude,
-                                                               longitude,
-                                                               threshold) {
-  var nearbyMeteors = this.getNearbyMeteors(latitude, longitude, threshold);
+                                                               longitude) {
+  var nearbyMeteors = this.getNearbyMeteors(latitude, longitude);
   return Object.keys(nearbyMeteors).length /
       Object.keys(this.meteoriteData).length;
 };
@@ -102,9 +149,8 @@ DataHandler.prototype.getDangerPercentageByDistance = function(latitude,
  * @param {number} threshold
  */
 DataHandler.prototype.getDangerPercentageByMass = function(latitude,
-                                                           longitude,
-                                                           threshold) {
-  var nearbyMeteors = this.getNearbyMeteors(latitude, longitude, threshold);
+                                                           longitude) {
+  var nearbyMeteors = this.getNearbyMeteors(latitude, longitude);
   var nearbyMassSum = 0;
   for (var meteor in nearbyMeteors) {
     nearbyMassSum += nearbyMeteors[meteor]['mass'];
@@ -127,13 +173,14 @@ DataHandler.prototype.getDangerPercentageByMass = function(latitude,
  * @param {number} threshold
  */
 DataHandler.prototype.colorCodeMeteors = function(meteors, latitude,
-                                                  longitude, threshold) {
+                                                  longitude) {
   for (var meteor in meteors) {
     if (Util.getSquaredEuclideanDistance(
         this.meteoriteData[meteor]['latitude'],
         this.meteoriteData[meteor]['longitude'],
         latitude,
-        longitude) < threshold * threshold) {
+        longitude) <
+        DataHandler.NEARNESS_THRESHOLD * DataHandler.NEARNESS_THRESHOLD) {
       meteors[meteor]['color'] = DataHandler.NEAR_COLOR;
     } else {
       meteors[meteor]['color'] = DataHandler.FAR_COLOR;
