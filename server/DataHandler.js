@@ -51,7 +51,6 @@ DataHandler.prototype.setup = function() {
       });
     },
     function(callback) {
-
 //      Bullshit way to get the cluster centroids.
 //      We take the console.log output and copy it to a file lol.
 //      var latlngs = [];
