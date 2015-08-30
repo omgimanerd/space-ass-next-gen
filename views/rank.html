@@ -60,21 +60,8 @@
         },
         map: geographic_map
       });
-    });
-    $('.rank-link').on('click', function(event) {
-      event.preventDefault();
-      var link_text = $(this).text();
-      var latlng = link_text.substr(link_text.indexOf(".") + 2)
-      var lat = latlng.substring(0, latlng.indexOf(","))
-      var lng = latlng.substring(latlng.indexOf(",") + 2, latlng.indexOf("P"))
-      var googlelatlng = new google.maps.LatLng(lat, lng)
-      geographic_map.setCenter(googlelatlng)
-      marker.setMap(null)
-      marker = new google.maps.Marker({
-        position: googlelatlng
-      });
-      marker.setMap(geographic_map)
-      var meteors = {{ hotspots.nearbyMeteors }};
+      var meteors = {{ JSON.stringify(hotspot.nearbyMeteors) }};
+      console.log(meteors)
       for (var meteor in meteors) {
         var meteorCircle = new google.maps.Circle({
           strokeColor: meteors[meteor]['color'],
@@ -92,5 +79,19 @@
                         MAX_METEOR_DISPLAY_SIZE)
         });
       }
+    });
+    $('.rank-link').on('click', function(event) {
+      event.preventDefault();
+      var link_text = $(this).text();
+      var latlng = link_text.substr(link_text.indexOf(".") + 2)
+      var lat = latlng.substring(0, latlng.indexOf(","))
+      var lng = latlng.substring(latlng.indexOf(",") + 2, latlng.indexOf("P"))
+      var googlelatlng = new google.maps.LatLng(lat, lng)
+      geographic_map.setCenter(googlelatlng)
+      marker.setMap(null)
+      marker = new google.maps.Marker({
+        position: googlelatlng
+      });
+      marker.setMap(geographic_map)
     });
   </script>
