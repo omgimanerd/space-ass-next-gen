@@ -14,13 +14,14 @@
     <ul class="nav navbar-nav">
       <li><a href="/">Home</a></li>
       <li><a href="/rank">Hotspots</a></li>
+      <li><a href="/about">About</a></li>
     </ul>
   </div>
 </nav>
 <div class="row full-height">
   <div class="col-md-2 height">
     <ul class="nav nav-pills nav-stacked rank-list">
-      <li><p class="rank-title">Top Meteorite Crash Spots</p></li>
+      <li><p class="rank-title">Top Meteor Crash Spots</p></li>
       {% for hotspot in hotspots %}
         <li>
           <a class="rank-link" name='{{ loop.index0 }}'>
