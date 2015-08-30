@@ -83,7 +83,6 @@ DataHandler.prototype.setup = function() {
           throw err;
         }
         context.hotspots = JSON.parse(data);
-        console.log(context.hotspots);
         callback();
       });
     }
