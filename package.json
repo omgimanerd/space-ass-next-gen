@@ -1,5 +1,5 @@
 {
-  "name": "space-ass-next-gen",
+  "name": "whataretheodds",
   "version": "1.0.0",
   "description": "Space Apps Next Gen Project Pitch",
   "main": "server.js",
@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:omgimanerd/space-ass-next-gen"
+    "url": "git@github.com:omgimanerd/whataretheodds"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/omgimanerd/space-ass-next-gen/issues"
+    "url": "https://github.com/omgimanerd/whataretheodds/issues"
   },
-  "homepage": "https://github.com/omgimanerd/space-ass-next-gen",
+  "homepage": "https://github.com/omgimanerd/whataretheodds",
   "dependencies": {
     "async": "^1.4.2",
     "bower": "^1.5.2",
