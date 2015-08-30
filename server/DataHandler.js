@@ -96,7 +96,7 @@ DataHandler.prototype.setup = function() {
  * Returns the top 10 meteorite hotspots.
  */
 DataHandler.prototype.getHotspots = function() {
-  var topHotspots = this.hotspots.slice(0, 6);
+  var topHotspots = this.hotspots.slice(0, 5);
   for (var i = 0; i < topHotspots.length; ++i) {
     hotspot = topHotspots[i]
     topHotspots[i]['nearbyMeteors'] = this.getNearbyMeteors(
