@@ -27,7 +27,7 @@ app.get('/', function(request, response) {
 });
 
 GEOCODE_URL = 'https://maps.googleapis.com/maps/api/geocode/json';
-NEARNESS_THRESHOLD = 10;
+NEARNESS_THRESHOLD = 7.5;
 
 app.get('/address', function(request, response) {
   var dangerPercentageByDistance = 0;
@@ -61,11 +61,11 @@ app.get('/address', function(request, response) {
       });
     },
     function(callback) {
-      meteors = dataHandler.getNearbyMeteors(
-          latLng.lat, latLng.lng, NEARNESS_THRESHOLD);
       dangerPercentageByDistance = dataHandler.getDangerPercentageByDistance(
           latLng.lat, latLng.lng, NEARNESS_THRESHOLD);
       dangerPercentageByMass = dataHandler.getDangerPercentageByMass(
+          latLng.lat, latLng.lng, NEARNESS_THRESHOLD);
+      meteors = dataHandler.getNearbyMeteors(
           latLng.lat, latLng.lng, NEARNESS_THRESHOLD);
       callback();
     },
@@ -81,6 +81,13 @@ app.get('/address', function(request, response) {
       lng: latLng.lng,
       meteors: meteors
     });
+  });
+});
+
+app.get('/rank', function(request, response) {
+  var hotspots = dataHandler.getHotspots();
+  response.render('rank.html', {
+    hotspots: hotspots
   });
 });
 
