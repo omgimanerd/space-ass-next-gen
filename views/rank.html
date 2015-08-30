@@ -23,9 +23,12 @@
       <li><p class="rank-title">Top Meteorite Crash Spots</p></li>
       {% for hotspot in hotspots %}
         <li>
-          <a class="rank-link">
-            {{ loop.index }}. {{ (hotspot.lat).toFixed(2) }}, {{ (hotspot.lng).toFixed(2) }}
-            <p class="rank-percent"> Probability: {{ (hotspot.rating * 100).toFixed(4)}}% </p>
+          <a class="rank-link" name='{{ loop.index0 }}'>
+            {{ loop.index }}. {{ (hotspot.lat).toFixed(2) }},
+            {{ (hotspot.lng).toFixed(2) }}
+            <p class="rank-percent">
+              Probability: {{ (hotspot.rating * 100).toFixed(4) }}&#37;
+            </p>
           </a>
         </li>
       {% endfor %}
@@ -42,8 +45,11 @@
     var MAP_GEOGRAPHIC_CANVAS_ID = 'map-geographic-canvas';
     var MAX_METEOR_DISPLAY_SIZE = 50000;
     var MIN_METEOR_DISPLAY_SIZE = 5000;
-    var geographic_map
-    var marker
+    var geographic_map = null;
+    var marker = null;
+    var hotspots = JSON.parse('{{ JSON.stringify(hotspots) }}');
+    var nearbyMeteorCircles = [];
+
     google.maps.event.addDomListener(window, 'load', function() {
       geographic_map = new google.maps.Map(
         document.getElementById(MAP_GEOGRAPHIC_CANVAS_ID),
@@ -60,32 +66,39 @@
         },
         map: geographic_map
       });
-      var meteors = {{ JSON.stringify(hotspot.nearbyMeteors) }};
-      console.log(meteors)
-      for (var meteor in meteors) {
-        var meteorCircle = new google.maps.Circle({
-          strokeColor: meteors[meteor]['color'],
-          strokeOpacity: 0.8,
-          strokeWeight: 2,
-          fillColor: meteors[meteor]['color'],
-          fillOpacity: 0.35,
-          map: geographic_map,
-          center: {
-            lat: parseFloat(meteors[meteor]['latitude']),
-            lng: parseFloat(meteors[meteor]['longitude'])
-          },
-          radius: bound(meteors[meteor]['mass'],
-                        MIN_METEOR_DISPLAY_SIZE,
-                        MAX_METEOR_DISPLAY_SIZE)
-        });
+      for (var i = 0; i < hotspots.length; ++i) {
+        var nearbyMeteors = hotspots[i]['nearbyMeteors'];
+        var tmp = [];
+        for (var nearbyMeteor in nearbyMeteors) {
+          var nearbyMeteorCircle = new google.maps.Circle({
+            strokeColor: 'red',
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: 'red',
+            fillOpacity: 0.35,
+            map: geographic_map,
+            center: {
+              lat: parseFloat(nearbyMeteors[nearbyMeteor]['latitude']),
+              lng: parseFloat(nearbyMeteors[nearbyMeteor]['longitude'])
+            },
+            radius: bound(nearbyMeteors[nearbyMeteor]['mass'],
+                          MIN_METEOR_DISPLAY_SIZE,
+                          MAX_METEOR_DISPLAY_SIZE)
+          });
+          tmp.push(nearbyMeteorCircle);
+          if (i != 0) {
+            nearbyMeteorCircle.setVisible(false);
+          }
+        }
+        nearbyMeteorCircles.push(tmp);
       }
+      console.log(nearbyMeteorCircles);
     });
     $('.rank-link').on('click', function(event) {
       event.preventDefault();
-      var link_text = $(this).text();
-      var latlng = link_text.substr(link_text.indexOf(".") + 2)
-      var lat = latlng.substring(0, latlng.indexOf(","))
-      var lng = latlng.substring(latlng.indexOf(",") + 2, latlng.indexOf("P"))
+      var index = $(this).attr('name');
+      var lat = hotspots[index]['lat']
+      var lng = hotspots[index]['lng']
       var googlelatlng = new google.maps.LatLng(lat, lng)
       geographic_map.setCenter(googlelatlng)
       marker.setMap(null)
@@ -93,5 +106,14 @@
         position: googlelatlng
       });
       marker.setMap(geographic_map)
+      for (var i = 0; i < nearbyMeteorCircles.length; ++i) {
+        console.log(nearbyMeteorCircles[i]);
+        for (var j = 0; j < nearbyMeteorCircles[i].length; ++j) {
+          nearbyMeteorCircles[i][j].setVisible(false);
+        }
+      }
+      for (var i = 0; i < nearbyMeteorCircles[index].length; ++i) {
+        nearbyMeteorCircles[index][i].setVisible(true);
+      }
     });
   </script>

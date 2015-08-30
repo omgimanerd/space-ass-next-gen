@@ -32,6 +32,8 @@ DataHandler.NEARNESS_THRESHOLD = 2.5;
 
 DataHandler.NUM_CLUSTERS = 12;
 
+DataHandler.NEARBY_METEOR_CAP = 20;
+
 /**
  * @private
  * This function is called internally and reads the meteorites JSON file.
@@ -116,7 +118,11 @@ DataHandler.prototype.getHotspots = function() {
  */
 DataHandler.prototype.getNearbyMeteors = function(latitude, longitude) {
   var nearbyMeteors = {};
+  var i = 0;
   for (var meteor in this.meteoriteData) {
+    if (i >= DataHandler.NEARBY_METEOR_CAP) {
+      break;
+    }
     if (Util.getSquaredEuclideanDistance(
         this.meteoriteData[meteor]['latitude'],
         this.meteoriteData[meteor]['longitude'],
@@ -124,6 +130,7 @@ DataHandler.prototype.getNearbyMeteors = function(latitude, longitude) {
         longitude) <
         DataHandler.NEARNESS_THRESHOLD * DataHandler.NEARNESS_THRESHOLD) {
       nearbyMeteors[meteor] = this.meteoriteData[meteor];
+      ++i;
     }
   }
   return this.colorCodeMeteors(nearbyMeteors, latitude,
