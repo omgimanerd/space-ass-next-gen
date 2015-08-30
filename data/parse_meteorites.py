@@ -24,7 +24,7 @@ def main():
     meteorites_file.write(json.dumps(parsed_fields, sort_keys=True,
                                      encoding='utf-8', indent=2,
                                      separators=(',', ': ')))
-  print 'Finished writing meteorites.json'
+  print 'Successfully wrote meteorites.json'
 
 if __name__ == '__main__':
   main()

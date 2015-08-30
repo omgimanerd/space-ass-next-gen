@@ -13,8 +13,9 @@ var Util = require('./Util');
  * This class handles the interpretation of latitude, longitude, and meteorite
  * positional data.
  */
-function DataHandler(meteoriteData) {
+function DataHandler(meteoriteData, hotspots) {
   this.meteoriteData = meteoriteData;
+  this.hotspots = hotspots;
 
   this.setup();
 }
@@ -35,6 +36,19 @@ DataHandler.prototype.setup = function() {
     }
     context.meteoriteData = JSON.parse(data);
   });
+  fs.readFile('data/hotspots.json', function(err, data) {
+    if (err) {
+      throw err;
+    }
+    context.hotspots = JSON.parse(data);
+  });
+};
+
+/**
+ * Returns the 10 meteorite hotspots saved in hotspots.json.
+ */
+DataHandler.prototype.getHotspots = function() {
+  return this.hotspots;
 };
 
 /**
