@@ -3,9 +3,22 @@
 {% block head %}
   <script src='https://maps.googleapis.com/maps/api/js?key=AIzaSyD4RhZKP0SgIHqX5CLbBZR4Au1NXs89AYQ'>
   </script>
+  <script type="text/javascript" src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/maplabel/src/maplabel.js">
+  </script>
 {% endblock %}
 
 {% block body %}
+  <nav class="navbar navbar-default">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">How Safe Is Your Home?</a>
+    </div>
+    <div class="container-fluid">
+      <ul class="nav navbar-nav">
+        <li><a href="/">Home</a></li>
+        <li><a href="/rank">Hotspots</a></li>
+      </ul>
+    </div>
+  </nav>
   <div class='row percent-contain'>
     <div class='col-md-12'>
       <div class='percent-block'>
@@ -59,6 +72,14 @@
                       MIN_METEOR_DISPLAY_SIZE,
                       MAX_METEOR_DISPLAY_SIZE)
       });
+      var mapLabel = new MapLabel({
+        text: meteor,
+        position: new google.maps.LatLng(parseFloat(meteors[meteor]['latitude']), parseFloat(meteors[meteor]['longitude'])),
+        map: geographic_map,
+        fontSize: 12,
+        fontColor: "rgb(158, 17, 200)",
+        align: 'right'
+    });
     }
     var marker = new google.maps.Marker({
       position: {
