@@ -8,7 +8,7 @@
 {% block body %}
 <nav class="navbar navbar-default">
   <div class="navbar-header">
-    <a class="navbar-brand" href="/">How Safe Is Your Home?</a>
+    <a class="navbar-brand" href="/">What Are The Odds?</a>
   </div>
   <div class="container-fluid">
     <ul class="nav navbar-nav">
@@ -20,6 +20,7 @@
 <div class="row full-height">
   <div class="col-md-2 height">
     <ul class="nav nav-pills nav-stacked rank-list">
+      <li><p class="rank-title">Top Meteorite Crash Spots</p></li>
       {% for hotspot in hotspots %}
         <li>
           <a class="rank-link">
@@ -73,5 +74,23 @@
         position: googlelatlng
       });
       marker.setMap(geographic_map)
+      var meteors = {{ hotspots.nearbyMeteors }};
+      for (var meteor in meteors) {
+        var meteorCircle = new google.maps.Circle({
+          strokeColor: meteors[meteor]['color'],
+          strokeOpacity: 0.8,
+          strokeWeight: 2,
+          fillColor: meteors[meteor]['color'],
+          fillOpacity: 0.35,
+          map: geographic_map,
+          center: {
+            lat: parseFloat(meteors[meteor]['latitude']),
+            lng: parseFloat(meteors[meteor]['longitude'])
+          },
+          radius: bound(meteors[meteor]['mass'],
+                        MIN_METEOR_DISPLAY_SIZE,
+                        MAX_METEOR_DISPLAY_SIZE)
+        });
+      }
     });
   </script>

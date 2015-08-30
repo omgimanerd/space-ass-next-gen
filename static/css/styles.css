@@ -115,7 +115,7 @@ body,
   height: 100%;
 }
 .rank-list li {
-  height: 10%;
+  height: 15%;
   margin: 0 !important;
 }
 .rank-list li a {
@@ -142,4 +142,10 @@ body,
 }
 .rank-link:hover {
   cursor: pointer;
+}
+.rank-title {
+  padding-top: 20px;
+  padding-left: 45px;
+  font-size: 24px;
+  text-decoration: underline;
 }
