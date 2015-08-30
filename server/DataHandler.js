@@ -178,7 +178,8 @@ DataHandler.prototype.colorCodeMeteors = function(meteors, latitude,
         this.meteoriteData[meteor]['longitude'],
         latitude,
         longitude) <
-        DataHandler.NEARNESS_THRESHOLD * DataHandler.NEARNESS_THRESHOLD) {
+        DataHandler.NEARNESS_THRESHOLD *
+        DataHandler.NEARNESS_THRESHOLD / 4) {
       meteors[meteor]['color'] = DataHandler.NEAR_COLOR;
     } else {
       meteors[meteor]['color'] = DataHandler.FAR_COLOR;
