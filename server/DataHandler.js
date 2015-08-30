@@ -28,7 +28,7 @@ DataHandler.NEAR_COLOR = '#d00000';
 
 DataHandler.FAR_COLOR = '#00e600';
 
-DataHandler.NEARNESS_THRESHOLD = 10;
+DataHandler.NEARNESS_THRESHOLD = 2.5;
 
 /**
  * @private
