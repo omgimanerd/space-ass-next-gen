@@ -47,15 +47,15 @@
       geographic_map = new google.maps.Map(
         document.getElementById(MAP_GEOGRAPHIC_CANVAS_ID),
         {
-          center: new google.maps.LatLng(33.05, -108.94),
+          center: new google.maps.LatLng(-71.51, 35.67),
           streetViewControl: false,
           zoom: 8
         }
       );
       marker = new google.maps.Marker({
         position: {
-          lat: 33.05,
-          lng: -108.94
+          lat: -71.51,
+          lng: 35.67
         },
         map: geographic_map
       });
@@ -65,7 +65,7 @@
       var link_text = $(this).text();
       var latlng = link_text.substr(link_text.indexOf(".") + 2)
       var lat = latlng.substring(0, latlng.indexOf(","))
-      var lng = latlng.substr(latlng.indexOf(",") + 2)
+      var lng = latlng.substring(latlng.indexOf(",") + 2, latlng.indexOf("P"))
       var googlelatlng = new google.maps.LatLng(lat, lng)
       geographic_map.setCenter(googlelatlng)
       marker.setMap(null)
