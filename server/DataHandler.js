@@ -51,41 +51,40 @@ DataHandler.prototype.setup = function() {
       });
     },
     function(callback) {
-      /*
-      Bullshit way to get the cluster centroids.
-      We take the console.log output and copy it to a file lol.
 
-      var latlngs = [];
-      for (var meteor in context.meteoriteData) {
-        latlngs.push([
-          context.meteoriteData[meteor]['latitude'],
-          context.meteoriteData[meteor]['longitude']
-        ]);
-      }
-      var kmeans = new clusterfck.Kmeans();
-      var hotspotClusters = kmeans.cluster(latlngs);
-      context.hotspots = [];
-      for (var i = 0; i < kmeans.centroids.length; ++i) {
-        var lat = kmeans.centroids[i][0];
-        var lng = kmeans.centroids[i][1];
-        context.hotspots.push({
-          lat: lat,
-          lng: lng,
-          rating: context.getDangerPercentageByMass(lat, lng)
-        });
-      }
-      context.hotspots.sort(function(a, b) {
-        return b['rating'] - a['rating'];
-      });
-      console.log(context.hotspots);
+//      Bullshit way to get the cluster centroids.
+//      We take the console.log output and copy it to a file lol.
+//      var latlngs = [];
+//      for (var meteor in context.meteoriteData) {
+//        latlngs.push([
+//          context.meteoriteData[meteor]['latitude'],
+//          context.meteoriteData[meteor]['longitude']
+//        ]);
+//      }
+//      var kmeans = new clusterfck.Kmeans();
+//      var hotspotClusters = kmeans.cluster(latlngs);
+//      context.hotspots = [];
+//      for (var i = 0; i < kmeans.centroids.length; ++i) {
+//        var lat = kmeans.centroids[i][0];
+//        var lng = kmeans.centroids[i][1];
+//        context.hotspots.push({
+//          lat: lat,
+//          lng: lng,
+//          rating: context.getDangerPercentageByMass(lat, lng)
+//        });
+//      }
+//      context.hotspots.sort(function(a, b) {
+//        return b['rating'] - a['rating'];
+//      });
+//      console.log(JSON.stringify(context.hotspots));
+//      We'll read from that file, fuck it.
 
-      We'll read from that file, fuck it.
-      */
-      fs.readFile('/data/hotspots.json', function(err, data) {
+      fs.readFile('data/hotspots.json', function(err, data) {
         if (err) {
           throw err;
         }
         context.hotspots = JSON.parse(data);
+        console.log(context.hotspots);
         callback();
       });
     }
