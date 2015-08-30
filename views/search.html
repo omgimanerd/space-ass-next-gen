@@ -12,10 +12,10 @@
         <p class='percent-question'>
           What're the chances of a meteorite hitting you?</p>
         <p class='percent'>
-          {{ percentageByDistance * 100 }}%
+          By distance: {{ percentageByDistance * 100 }}%
         </p>
         <p class='percent'>
-          {{ percentageByMass * 100 }} %
+          Accounting for mass: {{ percentageByMass * 100 }} %
         </p>
       </div>
     </div>
@@ -39,7 +39,7 @@
       {
         center: new google.maps.LatLng({{ lat }}, {{ lng }}),
         streetViewControl: false,
-        zoom: 13
+        zoom: 8
       }
     );
     var nearby = {{ JSON.stringify(nearbyMeteors) }};
@@ -60,6 +60,13 @@
                       MAX_METEOR_DISPLAY_SIZE)
       });
     }
+    var marker = new google.maps.Marker({
+      position: {
+        lat: {{ lat }},
+        lng: {{ lng }}
+      },
+      map: geographic_map
+    });
   });
 </script>
 {% endblock %}

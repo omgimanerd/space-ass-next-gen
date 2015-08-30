@@ -4,15 +4,21 @@
 
   {{ error }}
 
-  <div class="row">
-    <div class="col-md-6 col-md-offset-3">
-      <form action="/address" method="GET">
+  <div class="row background">
+    <div class="col-md-12 form-height">
+      <p class="question">How Safe Are You?</p>
+      <form class="search-form" action="/address" method="GET">
         <input class="search-text" type="text"
                name="address" placeholder="Address">
-        <button class="search-btn" type="submit">Search</button>
+        <button class="search-btn" type="submit">
+        <span class="glyphicon glyphicon-search"></span>
+        </button>
       </form>
     </div>
   </div>
-
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2">
+    </div>
+  </div>
 
 {% endblock %}
