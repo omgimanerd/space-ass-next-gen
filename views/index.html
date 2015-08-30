@@ -3,7 +3,17 @@
 {% block body %}
 
   {{ error || '' }}
-
+  <nav class="navbar navbar-default">
+    <div class="navbar-header">
+      <a class="navbar-brand nav-home" href="/">How Safe Is Your Home?</a>
+    </div>
+    <div class="container-fluid">
+      <ul class="nav navbar-nav nav-home">
+        <li><a href="/">Home</a></li>
+        <li><a href="/rank">Hotspots</a></li>
+      </ul>
+    </div>
+  </nav>
   <div class='row background'>
     <div class='col-md-12 form-height'>
       <p class='question'>
@@ -20,10 +30,6 @@
           </button>
         </div>
       </form>
-    </div>
-  </div>
-  <div class='row'>
-    <div class='col-md-8 col-md-offset-2'>
     </div>
   </div>
 

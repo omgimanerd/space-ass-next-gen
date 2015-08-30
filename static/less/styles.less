@@ -2,12 +2,30 @@ html, body, #container, .map-height {
   height: 100%;
 }
 .navbar {
+  z-index: 10;
   margin-bottom: 0;
   background-color: transparent;
   border: 0;
 }
+.navbar-nav {
+  li {
+    a {
+      padding-top: 18px;
+      padding-bottom: 12px;
+    }
+  }
+}
+.nav-home {
+  color: white !important;
+  li {
+    a {
+      color: white !important;
+    }
+  }
+}
 .navbar-brand {
-  color: black;
+  font-size: 26px;
+  padding-left: 40px;
 }
 .percent-block {
   height: 168px;
@@ -36,7 +54,7 @@ html, body, #container, .map-height {
 .background {
   margin: 0;
   margin-top: -50px;
-  height: 80%;
+  height: 100%;
   width: 100%;
   background: url("../images/bg.jpg") center center;
   background-size: cover;
@@ -106,7 +124,6 @@ html, body, #container, .map-height {
   height: 100%;
   li {
     height: 10%;
-    border-right: 2px solid lightgrey;
     margin: 0 !important;
     a {
       padding-top: 16px;
@@ -131,4 +148,7 @@ html, body, #container, .map-height {
 .height {
   height: 100%;
   padding: 0;
+}
+.rank-link:hover {
+  cursor: pointer;
 }

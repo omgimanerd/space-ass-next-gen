@@ -6,11 +6,22 @@
 {% endblock %}
 
 {% block body %}
+<nav class="navbar navbar-default">
+  <div class="navbar-header">
+    <a class="navbar-brand" href="/">How Safe Is Your Home?</a>
+  </div>
+  <div class="container-fluid">
+    <ul class="nav navbar-nav">
+      <li><a href="/">Home</a></li>
+      <li><a href="/rank">Hotspots</a></li>
+    </ul>
+  </div>
+</nav>
 <div class="row full-height">
   <div class="col-md-2 height">
     <ul class="nav nav-pills nav-stacked rank-list">
       {% for hotspot in hotspots %}
-        <li><a href="">{{ loop.index }}. {{ hotspot.lat }}, {{ hotspot.lng }}</a></li>
+        <li><a class="rank-link">{{ loop.index }}. {{ hotspot.lat }}, {{ hotspot.lng }}</a></li>
       {% endfor %}
     </ul>
   </div>
@@ -25,9 +36,10 @@
     var MAP_GEOGRAPHIC_CANVAS_ID = 'map-geographic-canvas';
     var MAX_METEOR_DISPLAY_SIZE = 50000;
     var MIN_METEOR_DISPLAY_SIZE = 5000;
-
+    var geographic_map
+    var marker
     google.maps.event.addDomListener(window, 'load', function() {
-      var geographic_map = new google.maps.Map(
+      geographic_map = new google.maps.Map(
         document.getElementById(MAP_GEOGRAPHIC_CANVAS_ID),
         {
           center: new google.maps.LatLng(-72, 36),
@@ -35,12 +47,26 @@
           zoom: 8
         }
       );
-      var marker = new google.maps.Marker({
+      marker = new google.maps.Marker({
         position: {
           lat: -72,
           lng: 36
         },
         map: geographic_map
       });
+    });
+    $('.rank-link').on('click', function(event) {
+      event.preventDefault();
+      var link_text = $(this).text();
+      var latlng = link_text.substr(link_text.indexOf(".") + 2)
+      var lat = latlng.substring(0, latlng.indexOf(","))
+      var lng = latlng.substr(latlng.indexOf(",") + 2)
+      var googlelatlng = new google.maps.LatLng(lat, lng)
+      geographic_map.setCenter(googlelatlng)
+      marker.setMap(null)
+      marker = new google.maps.Marker({
+        position: googlelatlng
+      });
+      marker.setMap(geographic_map)
     });
   </script>
