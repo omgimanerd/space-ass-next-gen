@@ -93,7 +93,13 @@ DataHandler.prototype.setup = function() {
  * Returns the top 10 meteorite hotspots.
  */
 DataHandler.prototype.getHotspots = function() {
-  return this.hotspots.slice(0, 10);
+  var topHotspots = this.hotspots.slice(0, 10);
+  for (var i = 0; i < topHotspots.length; ++i) {
+    hotspot = topHotspots[i]
+    topHotspots[i]['nearbyMeteors'] = this.getNearbyMeteors(
+        hotspot.lat, hotspot.lng);
+  }
+  return topHotspots;
 };
 
 /**
