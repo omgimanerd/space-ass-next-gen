@@ -51,7 +51,6 @@ DataHandler.prototype.setup = function() {
       });
     },
     function(callback) {
-
 //      Bullshit way to get the cluster centroids.
 //      We take the console.log output and copy it to a file lol.
 //      var latlngs = [];
@@ -70,7 +69,7 @@ DataHandler.prototype.setup = function() {
 //        context.hotspots.push({
 //          lat: lat,
 //          lng: lng,
-//          rating: context.getDangerPercentageByMass(lat, lng)
+//          rating: context.getDangerPercentageByDistance(lat, lng)
 //        });
 //      }
 //      context.hotspots.sort(function(a, b) {
@@ -84,7 +83,6 @@ DataHandler.prototype.setup = function() {
           throw err;
         }
         context.hotspots = JSON.parse(data);
-        console.log(context.hotspots);
         callback();
       });
     }
@@ -95,7 +93,13 @@ DataHandler.prototype.setup = function() {
  * Returns the top 10 meteorite hotspots.
  */
 DataHandler.prototype.getHotspots = function() {
-  return this.hotspots.slice(0, 10);
+  var topHotspots = this.hotspots.slice(0, 10);
+  for (var i = 0; i < topHotspots.length; ++i) {
+    hotspot = topHotspots[i]
+    topHotspots[i]['nearbyMeteors'] = this.getNearbyMeteors(
+        hotspot.lat, hotspot.lng);
+  }
+  return topHotspots;
 };
 
 /**
@@ -179,7 +183,8 @@ DataHandler.prototype.colorCodeMeteors = function(meteors, latitude,
         this.meteoriteData[meteor]['longitude'],
         latitude,
         longitude) <
-        DataHandler.NEARNESS_THRESHOLD * DataHandler.NEARNESS_THRESHOLD) {
+        DataHandler.NEARNESS_THRESHOLD *
+        DataHandler.NEARNESS_THRESHOLD / 4) {
       meteors[meteor]['color'] = DataHandler.NEAR_COLOR;
     } else {
       meteors[meteor]['color'] = DataHandler.FAR_COLOR;
