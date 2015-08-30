@@ -48,7 +48,6 @@ app.get('/address', function(request, response) {
         }
         body = JSON.parse(body);
         if (body.status != 'OK') {
-          console.log('error');
           callback(body);
           return;
         }
@@ -72,15 +71,18 @@ app.get('/address', function(request, response) {
   ], function(error) {
     if (error) {
       console.error(error);
-      return;
+      response.render('index.html', {
+        error: 'Something went wrong, try a different input or wait a bit.'
+      });
+    } else {
+      response.render('search.html', {
+        percentageByDistance: dangerPercentageByDistance,
+        percentageByMass: dangerPercentageByMass,
+        lat: latLng.lat,
+        lng: latLng.lng,
+        meteors: meteors
+      });
     }
-    response.render('search.html', {
-      percentageByDistance: dangerPercentageByDistance,
-      percentageByMass: dangerPercentageByMass,
-      lat: latLng.lat,
-      lng: latLng.lng,
-      meteors: meteors
-    });
   });
 });
 
