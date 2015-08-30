@@ -24,7 +24,7 @@
         <li>
           <a class="rank-link">
             {{ loop.index }}. {{ (hotspot.lat).toFixed(2) }}, {{ (hotspot.lng).toFixed(2) }}
-            <p class="rank-percent"> Probability: {{ (hotspot.rating).toFixed(6) *100}}% </p>
+            <p class="rank-percent"> Probability: {{ (hotspot.rating * 100).toFixed(4)}}% </p>
           </a>
         </li>
       {% endfor %}
