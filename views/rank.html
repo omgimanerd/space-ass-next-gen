@@ -21,7 +21,7 @@
   <div class="col-md-2 height">
     <ul class="nav nav-pills nav-stacked rank-list">
       {% for hotspot in hotspots %}
-        <li><a class="rank-link">{{ loop.index }}. {{ hotspot.lat }}, {{ hotspot.lng }}</a></li>
+        <li><a class="rank-link">{{ loop.index }}. {{ (hotspot.lat).toFixed(2) }}, {{ (hotspot.lng).toFixed(2) }}</a></li>
       {% endfor %}
     </ul>
   </div>
