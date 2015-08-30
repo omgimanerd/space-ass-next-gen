@@ -119,8 +119,8 @@ body,
   margin: 0 !important;
 }
 .rank-list li a {
-  padding-top: 16px;
-  padding-bottom: 16px;
+  padding-top: 5px;
+  padding-bottom: 5px;
   padding-left: 50px;
   color: black;
   height: 50px;
