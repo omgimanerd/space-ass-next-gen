@@ -12,7 +12,8 @@ def main():
 
   parsed_fields = {}
   for item in data:
-    if item[12] and item[15] and item[16]:
+    if item[12] and item[15] and item[16] and (
+        float(item[15]) != 0 and float(item[16]) != 0):
       parsed_fields[item[8]] = {
         'mass': float(item[12]),
         'time': item[14],
