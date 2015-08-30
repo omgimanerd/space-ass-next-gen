@@ -51,6 +51,10 @@ DataHandler.prototype.setup = function() {
       });
     },
     function(callback) {
+      /*
+      Bullshit way to get the cluster centroids.
+      We take the console.log output and copy it to a file lol.
+
       var latlngs = [];
       for (var meteor in context.meteoriteData) {
         latlngs.push([
@@ -73,10 +77,19 @@ DataHandler.prototype.setup = function() {
       context.hotspots.sort(function(a, b) {
         return b['rating'] - a['rating'];
       });
+      console.log(context.hotspots);
+
+      We'll read from that file, fuck it.
+      */
+      fs.readFile('/data/hotspots.json', function(err, data) {
+        if (err) {
+          throw err;
+        }
+        context.hotspots = JSON.parse(data);
+        callback();
+      });
     }
   ]);
-
-  this.hotspots = null;
 };
 
 /**
