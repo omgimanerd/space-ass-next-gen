@@ -69,7 +69,7 @@ DataHandler.prototype.setup = function() {
 //        context.hotspots.push({
 //          lat: lat,
 //          lng: lng,
-//          rating: context.getDangerPercentageByMass(lat, lng)
+//          rating: context.getDangerPercentageByDistance(lat, lng)
 //        });
 //      }
 //      context.hotspots.sort(function(a, b) {
