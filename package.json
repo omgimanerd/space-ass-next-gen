@@ -26,5 +26,9 @@
     "request": "^2.61.0",
     "shallow-copy": "0.0.1",
     "swig": "^1.4.2"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-less": "^3.0.3"
   }
 }
