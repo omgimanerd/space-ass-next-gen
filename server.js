@@ -4,8 +4,9 @@ var PORT_NUMBER = process.env.PORT || 5000;
 var async = require('async');
 var express = require('express');
 var http_request = require('request');
-var swig = require('swig');
 var http = require('http');
+var morgan = require('morgan');
+var swig = require('swig');
 
 var DataHandler = require('./server/DataHandler');
 
@@ -17,6 +18,7 @@ app.engine('html', swig.renderFile);
 app.set('port', PORT_NUMBER);
 app.set('view engine', 'html');
 
+app.use(morgan(':date[web] :method :url :req[header] :remote-addr :status'));
 app.use('/bower_components',
         express.static(__dirname + '/bower_components'));
 app.use('/static',
@@ -39,7 +41,8 @@ app.get('/address', function(request, response) {
     // user's entered address so that we can query it in NASA's meteorite API.
     function(callback) {
       http_request(GEOCODE_URL + '?address=' +
-                   encodeURIComponent(request.query.address),
+                   encodeURIComponent(request.query.address) +
+                   '&key=' + process.env.GEOCODE_KEY,
                    function(error, googleResponse, body) {
         if (error) {
           callback(error);
